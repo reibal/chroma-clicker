@@ -3,16 +3,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager Instance { get; private set; }
 
-    [SerializeField]
-    private float currentChroma = 0f;
+    [SerializeField] private float currentChroma = 0f;
     private float chromaIncreasePerClick = 1f;
 
-    // TODO: Remove, this is just for testing
+    // TODO: Remove this initialization, this is just for testing
     private float chromaPerSecond = 5f;
-    private float loopDelay = 0.2f;
+
+    private float loopDelaySeconds = 0.2f;
 
     void Awake()
     {
@@ -28,9 +27,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(Loop());
-        UIManager.Instance.SetCurrentChroma(currentChroma);
+		// TODO: Load from saved data if it exists
+	    UIManager.Instance.SetCurrentChroma(currentChroma);
+		// TODO: Calculate from upgrades
         UIManager.Instance.SetChromaPerSecond(chromaPerSecond);
+		// TODO: Also set chroma per click, calculated from upgrades
+		//chromaIncreasePerClick = ...;
+        StartCoroutine(Loop());
     }
 
     public void OnChromaClicked()
@@ -43,9 +46,9 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            currentChroma += chromaPerSecond * loopDelay;
+            currentChroma += chromaPerSecond * loopDelaySeconds;
             UIManager.Instance.SetCurrentChroma(currentChroma);
-            yield return new WaitForSeconds(loopDelay);
+            yield return new WaitForSeconds(loopDelaySeconds);
         }
     }
 }

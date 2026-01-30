@@ -8,6 +8,8 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject upgradesMenu;
+    [SerializeField] private GameObject battleMenu;
+    [SerializeField] private GameObject settingsMenu;
 
     void Awake()
     {
@@ -38,10 +40,24 @@ public class MenuManager : MonoBehaviour
         upgradesMenu.SetActive(true);
     }
 
+	public void OpenBattleMenu()
+	{
+		CloseAllMenus();
+		battleMenu.SetActive(true);
+	}
+
+	public void OpenSettingsMenu()
+	{
+		CloseAllMenus();
+		settingsMenu.SetActive(true);
+	}
+
     private void CloseAllMenus()
     {
         mainMenu.SetActive(false);
         upgradesMenu.SetActive(false);
+		battleMenu.SetActive(false);
+		settingsMenu.SetActive(false);
     }
 
 }
