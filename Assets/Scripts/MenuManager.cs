@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour
@@ -6,10 +5,17 @@ public class MenuManager : MonoBehaviour
 
     public static MenuManager Instance { get; private set; }
 
-    [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject homeMenu;
     [SerializeField] private GameObject upgradesMenu;
     [SerializeField] private GameObject battleMenu;
     [SerializeField] private GameObject settingsMenu;
+
+	[SerializeField] private GameObject homeMenuButton;
+    [SerializeField] private GameObject upgradesMenuButton;
+    [SerializeField] private GameObject battleMenuButton;
+    [SerializeField] private GameObject settingsMenuButton;
+
+	private readonly Color SELECTED_MENU_COLOR = new Color(1f, 0.8f, 0.1f, 1f);
 
     void Awake()
     {
@@ -25,39 +31,61 @@ public class MenuManager : MonoBehaviour
 
     void Start()
     {
-        OpenMainMenu();
+        OpenHomeMenu();
     }
 
-    public void OpenMainMenu()
+    public void OpenHomeMenu()
     {
-        CloseAllMenus();
-        mainMenu.SetActive(true);
-    }
+		OpenMenu(homeMenu, homeMenuButton);
+	}
 
     public void OpenUpgradesMenu()
     {
-        CloseAllMenus();
-        upgradesMenu.SetActive(true);
+		OpenMenu(upgradesMenu, upgradesMenuButton);
     }
 
 	public void OpenBattleMenu()
 	{
-		CloseAllMenus();
-		battleMenu.SetActive(true);
+		OpenMenu(battleMenu, battleMenuButton);
 	}
 
 	public void OpenSettingsMenu()
 	{
-		CloseAllMenus();
-		settingsMenu.SetActive(true);
+		OpenMenu(settingsMenu, settingsMenuButton);
 	}
 
     private void CloseAllMenus()
     {
-        mainMenu.SetActive(false);
+        homeMenu.SetActive(false);
         upgradesMenu.SetActive(false);
 		battleMenu.SetActive(false);
 		settingsMenu.SetActive(false);
     }
+
+	private void OpenMenu(GameObject menu, GameObject button)
+	{
+		CloseAllMenus();
+		ResetAllButtons();
+		menu.SetActive(true);
+		SetButtonAsSelected(button);
+	}
+
+	private void SetButtonAsSelected(GameObject button)
+	{
+		button.GetComponent<UnityEngine.UI.Image>().color = SELECTED_MENU_COLOR;
+	}
+
+	private void ResetButton(GameObject button)
+	{
+		button.GetComponent<UnityEngine.UI.Image>().color = Color.white;
+	}
+
+	private void ResetAllButtons()
+	{
+		ResetButton(homeMenuButton);
+		ResetButton(upgradesMenuButton);
+		ResetButton(battleMenuButton);
+		ResetButton(settingsMenuButton);
+	}
 
 }

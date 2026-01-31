@@ -9,9 +9,9 @@ public class GameManager : MonoBehaviour
     private float chromaIncreasePerClick = 1f;
 
     // TODO: Remove this initialization, this is just for testing
-    private float chromaPerSecond = 5f;
+    private float chromaPerSecond = 2f;
 
-    private float loopDelaySeconds = 0.2f;
+    private float loopDelaySeconds = 0.125f;
 
     void Awake()
     {
