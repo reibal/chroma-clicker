@@ -72,12 +72,12 @@ public class MenuManager : MonoBehaviour
 
 	private void SetButtonAsSelected(GameObject button)
 	{
-		button.GetComponent<UnityEngine.UI.Image>().color = SELECTED_MENU_COLOR;
+		button.transform.GetChild(1).GetComponent<UnityEngine.UI.Image>().color = SELECTED_MENU_COLOR;
 	}
 
 	private void ResetButton(GameObject button)
 	{
-		button.GetComponent<UnityEngine.UI.Image>().color = Color.white;
+		button.transform.GetChild(1).GetComponent<UnityEngine.UI.Image>().color = Color.white;
 	}
 
 	private void ResetAllButtons()
