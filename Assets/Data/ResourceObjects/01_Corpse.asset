@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 561c76e8f32e68f44b55161fac9b53dd, type: 3}
   m_Name: 01_Corpse
   m_EditorClassIdentifier: Assembly-CSharp::ResourceData
+  resourceIndex: 1
   resourceName: Corpse
   description: A corpse of a previous expedition. Could get some chroma from it.
-  chromaPerSecond: 1
+  chromaPerSecond: 2
   baseCost: 160
-  costIncreaseRatio: 1.2
+  costIncreaseRatio: 0.15

@@ -358,7 +358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   resourcesContainer: {fileID: 1311058172}
   resourcePrefab: {fileID: 2021829630344492153, guid: 30008885327d5a843b3d2be44ca5e47e, type: 3}
-  resources:
+  resourceDataList:
   - {fileID: 11400000, guid: c25ab496b3348904786d930477bcc23b, type: 2}
   - {fileID: 11400000, guid: d2dc8c946c6349c47be5541853038898, type: 2}
   - {fileID: 11400000, guid: 3802565e09cad8041b030db17d5b5f2b, type: 2}
@@ -798,7 +798,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0

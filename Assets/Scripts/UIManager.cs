@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
 
     public void SetChromaPerSecond(float amount)
     {
-        chromaPerSecondText.text = Mathf.FloorToInt(amount).ToString() + " cps";
+        // Show up to 2 decimals 
+        chromaPerSecondText.text = $"{amount:F2} cps";
     }
 }
