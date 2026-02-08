@@ -24,11 +24,13 @@ public class ResourcesManager : MonoBehaviour
         resources = new ResourceRuntimeData[resourceDataList.Length];
 
         bool renderNext = true;
+        int[] resourcesAmounts = SaveSystem.Load().GetResourcesAmounts();
         for (int i = 0; i < resourceDataList.Length; i++)
         {
             resourceDataList[i].resourceIndex = i;
             ResourceRuntimeData resource = new();
             resource.Initialize(resourceDataList[i]);
+            resource.amount = resourcesAmounts[i];
             resources[i] = resource;
             if (renderNext)
             {
@@ -51,7 +53,7 @@ public class ResourcesManager : MonoBehaviour
     public void PurchaseResource(int resourceIndex)
     {
         ResourceRuntimeData resource = resources[resourceIndex];
-        float cost = resource.GetUpgradeCost();
+        int cost = resource.GetUpgradeCost();
         bool canAfford = GameManager.Instance.SpendChroma(cost);
         if (!canAfford)
         {
@@ -78,4 +80,14 @@ public class ResourcesManager : MonoBehaviour
         return total;
     }
 
+
+    public ResourceRuntimeData[] GetResourceRuntimeDataList()
+    {
+        return resources;
+    }
+
+    public ResourceData[] GetResourceDataList()
+    {
+        return resourceDataList;
+    }
 }

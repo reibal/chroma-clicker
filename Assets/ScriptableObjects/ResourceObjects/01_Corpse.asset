@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 561c76e8f32e68f44b55161fac9b53dd, type: 3}
-  m_Name: 00_Scraps
+  m_Name: 01_Corpse
   m_EditorClassIdentifier: Assembly-CSharp::ResourceData
-  resourceIndex: 0
-  resourceName: Scraps
-  description: These scraps emit a minimal amount of chroma...
-  chromaPerSecond: 0.5
-  baseCost: 30
-  costIncreaseRatio: 0.1
+  resourceIndex: 1
+  resourceName: Corpse
+  description: A corpse from a previous expedition. You could get some chroma from
+    it.
+  chromaPerSecond: 2
+  baseCost: 160
+  costIncreaseRatio: 0.15
+  icon: {fileID: 2354742914318534706, guid: 799b36129e755fb42a8ba81d95a7b3f0, type: 3}

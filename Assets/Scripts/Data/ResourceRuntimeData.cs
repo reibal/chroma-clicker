@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ResourceRuntimeData
@@ -18,9 +19,9 @@ public class ResourceRuntimeData
         resourceGameObject = gameObject;
     }
 
-    public float GetUpgradeCost()
+    public int GetUpgradeCost()
     {
-        return resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount);
+        return Mathf.CeilToInt(resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount));
     }
 
     public float GetChromaPerSecond()

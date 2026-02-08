@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceData
   resourceIndex: 2
   resourceName: Special Stone
-  description: Give this to Esquie to turn "woo" into "wee". He will give you quite
-    some chroma!
+  description: Give this to Esquie to turn "woo" into "wee". He will be able to bring
+    quite some chroma!
   chromaPerSecond: 12
   baseCost: 840
   costIncreaseRatio: 0.2
+  icon: {fileID: -5047970283769418188, guid: cd011905837097443a189d5fc773ff7b, type: 3}

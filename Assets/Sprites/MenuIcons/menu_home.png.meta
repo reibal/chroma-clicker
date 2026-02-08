@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 443bc38acb151414486b97a265fcdf20
+guid: f75a386daec7f3b4e9ea698ed1de16bf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9221441297420437879
-    second: auto-repair_0
+      213: -7150079824797731483
+    second: digital-trace_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,11 +109,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: auto-repair_0
+      name: digital-trace_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 779ccd1b00429ff70800000000000000
-      internalID: 9221441297420437879
+      spriteID: 5657e373840d5cc90800000000000000
+      internalID: -7150079824797731483
       vertices: []
       indices: 
       edges: []
@@ -148,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      auto-repair_0: 9221441297420437879
+      digital-trace_0: -7150079824797731483
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

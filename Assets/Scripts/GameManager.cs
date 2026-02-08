@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
 
     private float chromaPerSecond = 0f;
 
-    private float loopDelaySeconds = 0.125f;
+    private readonly float loopDelaySeconds = 0.05f; // 0.05f delay = 20 recalculations per second
+    private readonly int autosaveDelaySeconds = 5;
 
     void Awake()
     {
@@ -21,16 +22,26 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
+        SaveData saveData = SaveSystem.Load();
+        currentChroma = saveData.GetCurrentChroma();
     }
 
     void Start()
     {
-        // TODO: Load from saved data if it exists
-        UIManager.Instance.SetCurrentChroma(currentChroma);
+        SaveData saveData = SaveSystem.Load();
+        UIManager.Instance.SetCurrentChroma(saveData.currentChroma);
         RecalculateTotalChromaPerSecond();
         StartCoroutine(Loop());
+        StartCoroutine(AutoSave());
     }
+
+    void OnApplicationQuit()
+    {
+        SaveSystem.Save(currentChroma, ResourcesManager.Instance.GetResourceRuntimeDataList());
+    }
+
 
     public void OnChromaClicked()
     {
@@ -46,6 +57,20 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.SetCurrentChroma(currentChroma);
             yield return new WaitForSeconds(loopDelaySeconds);
         }
+    }
+
+    IEnumerator AutoSave()
+    {
+        while (true)
+        {
+            SaveData();
+            yield return new WaitForSeconds(autosaveDelaySeconds);
+        }
+    }
+
+    private void SaveData()
+    {
+        SaveSystem.Save(currentChroma, ResourcesManager.Instance.GetResourceRuntimeDataList());
     }
 
     public float GetCurrentChroma()

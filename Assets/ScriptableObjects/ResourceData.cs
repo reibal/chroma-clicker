@@ -9,4 +9,5 @@ public class ResourceData : ScriptableObject
     public float chromaPerSecond;
     public int baseCost;
     public float costIncreaseRatio;
+    public Sprite icon;
 }
