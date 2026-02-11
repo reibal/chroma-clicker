@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561c76e8f32e68f44b55161fac9b53dd, type: 3}
+  m_Name: 04_Village
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceData
+  resourceIndex: 4
+  resourceName: Village
+  description: In this village, many people will help gather some Chroma.
+  chromaPerSecond: 560
+  baseCost: 36000
+  costIncreaseRatio: 0.25
+  icon: {fileID: 4734788938060851880, guid: cb9adfdc42ef7744295f8d111ab1f5eb, type: 3}

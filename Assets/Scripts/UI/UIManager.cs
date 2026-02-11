@@ -6,10 +6,15 @@ public class UIManager : MonoBehaviour
 
     public static UIManager Instance { get; private set; }
 
+    [Header("Texts")]
     [SerializeField]
     private TextMeshProUGUI currentChromaText;
     [SerializeField]
     private TextMeshProUGUI chromaPerSecondText;
+
+    [Header("Pop Up Window")]
+    [SerializeField]
+    private PopUpMessageWindow messageWindow;
 
     void Awake()
     {
@@ -37,5 +42,10 @@ public class UIManager : MonoBehaviour
     {
         // Show up to 2 decimals 
         chromaPerSecondText.text = $"{amount:F2} cps";
+    }
+
+    public void ShowMessage(string message)
+    {
+        messageWindow.ShowMessage(message);
     }
 }

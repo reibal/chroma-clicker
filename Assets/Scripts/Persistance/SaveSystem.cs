@@ -1,26 +1,29 @@
+using System;
 using UnityEngine;
 
 public static class SaveSystem
 {
-    private static readonly string savePath = System.IO.Path.Combine(UnityEngine.Application.persistentDataPath, "save.json");
+    private static readonly string savePath = System.IO.Path.Combine(Application.persistentDataPath, "save.json");
     private static SaveData currentSaveData = null;
 
     public static void Save(float currentChroma, ResourceRuntimeData[] runtimeResources)
     {
         if (currentSaveData == null)
         {
-            // This is a Safety Check: since Load() will create a default save,
-            // if save data is null and we save, we might be saving data before loading (dangerous af, can overwrite the game)
+            // This is a Safety Check: since Load() will always create a default save,
+            //  if save data is null and we save, we might be saving data before loading
+            //  (could overwrite the actual save)
             return;
         }
+
         int[] resources = new int[runtimeResources.Length];
         for (int i = 0; i < runtimeResources.Length; i++)
         {
             int resourceAmount = runtimeResources[i].amount;
             resources[i] = resourceAmount;
         }
+
         UpdateSaveDataVar(currentChroma, resources);
-        // Save data to a file
         SaveToFile();
     }
 
@@ -28,7 +31,7 @@ public static class SaveSystem
     {
         string json = JsonUtility.ToJson(currentSaveData, true);
         System.IO.File.WriteAllText(savePath, json);
-        Debug.Log("Guardado en: " + savePath);
+        Debug.Log("Saved at: " + savePath);
     }
 
     public static SaveData Load()
@@ -41,19 +44,38 @@ public static class SaveSystem
 
         if (System.IO.File.Exists(savePath))
         {
-            // Load saved data from file
-            return LoadFromFile();
+            // Load saved data from file into the currentSaveData variable
+            LoadFromFile();
         }
-        // Default values (if file does not exist yet)
-        int currentChroma = 0; // int currentChroma = chromaFromFile || 0;
-        int[] resources = GetDefaultResourceAmountsForSaveData(); // int[] resources = resourcesFromFile || GetDefaultResourceAmounts();
-        return UpdateSaveDataVar(currentChroma, resources);
+        else
+        {
+            // Create new save data if it does not exist yet
+            CreateNewSaveData();
+            Debug.Log("New save data created");
+        }
+        return currentSaveData;
     }
 
     private static SaveData LoadFromFile()
     {
         string json = System.IO.File.ReadAllText(savePath);
         currentSaveData = JsonUtility.FromJson<SaveData>(json);
+        return currentSaveData;
+    }
+
+
+    public static SaveData CreateNewSaveData()
+    {
+        // Default values (if file does not exist yet)
+        int currentChroma = 0; // int currentChroma = chromaFromFile || 0;
+        int[] resources = GetDefaultResourceAmountsForSaveData(); // int[] resources = resourcesFromFile || GetDefaultResourceAmounts();
+        return UpdateSaveDataVar(currentChroma, resources);
+    }
+
+    public static SaveData ResetSaveData()
+    {
+        CreateNewSaveData();
+        SaveToFile();
         return currentSaveData;
     }
 
@@ -80,4 +102,5 @@ public static class SaveSystem
         }
         return defaultAmounts;
     }
+
 }

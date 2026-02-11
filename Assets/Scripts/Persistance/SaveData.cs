@@ -1,8 +1,11 @@
-[System.Serializable]
+using System;
+
+[Serializable]
 public class SaveData
 {
     public float currentChroma;
     public int[] resourcesAmounts;
+    public long lastSaveTimestamp = 0;
     
     public SaveData(float currentChroma, int[] resourcesAmounts)
     {
@@ -13,6 +16,7 @@ public class SaveData
     {
         this.currentChroma = currentChroma;
         this.resourcesAmounts = resourcesAmounts;
+        lastSaveTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         return this;
     }
 
@@ -24,5 +28,15 @@ public class SaveData
     public int[] GetResourcesAmounts()
     {
         return resourcesAmounts;
+    }
+
+    public long GetSecondsFromLastSession()
+    {
+        if(lastSaveTimestamp == 0)
+        {
+            return 0;
+        }
+        long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        return now - lastSaveTimestamp;
     }
 }

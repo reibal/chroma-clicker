@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -24,22 +25,27 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        SaveData saveData = SaveSystem.Load();
-        currentChroma = saveData.GetCurrentChroma();
     }
 
     void Start()
     {
+        // Load saved data
         SaveData saveData = SaveSystem.Load();
+        // Total chroma
+        currentChroma = saveData.GetCurrentChroma();
         UIManager.Instance.SetCurrentChroma(saveData.currentChroma);
+        // Chroma per second
         RecalculateTotalChromaPerSecond();
-        StartCoroutine(Loop());
-        StartCoroutine(AutoSave());
+        // Add extra afk-farmed chroma
+        AddAfkFarmedChroma(saveData.GetSecondsFromLastSession());
+        // Coroutine loops
+        StartCoroutine(ChromaPerSecondLoop());
+        StartCoroutine(AutoSaveLoop());
     }
 
     void OnApplicationQuit()
     {
-        SaveSystem.Save(currentChroma, ResourcesManager.Instance.GetResourceRuntimeDataList());
+        SaveData();
     }
 
 
@@ -49,7 +55,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.SetCurrentChroma(currentChroma);
     }
 
-    IEnumerator Loop()
+    IEnumerator ChromaPerSecondLoop()
     {
         while (true)
         {
@@ -59,7 +65,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator AutoSave()
+    IEnumerator AutoSaveLoop()
     {
         while (true)
         {
@@ -87,6 +93,13 @@ public class GameManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void AddAfkFarmedChroma(long elapsedSeconds)
+    {
+        float obtainedChroma = chromaPerSecond * elapsedSeconds * 0.4f;
+        UIManager.Instance.ShowMessage("You got " + obtainedChroma + " chroma while you were AFK.");
+        currentChroma += obtainedChroma;
     }
 
     public void RecalculateTotalChromaPerSecond()
