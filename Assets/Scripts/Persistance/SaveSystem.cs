@@ -71,7 +71,7 @@ public static class SaveSystem
         return UpdateSaveDataVar(currentChroma, resources);
     }
 
-    public static SaveData ResetSaveData()
+    public static SaveData HardResetSavedData()
     {
         CreateNewSaveData();
         SaveToFile();

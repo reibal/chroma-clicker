@@ -104,4 +104,12 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.SetChromaPerSecondUI(chromaPerSecond);
         chromaIncreasePerClick = 1f + (chromaPerSecond * 0.05f); // Each click is = 1 + (5% of cps)
     }
+
+    public void DeleteAllSavedData()
+    {
+        // TODO: Add a confirmation message (instead of just an info message) before deleting data
+        UIManager.Instance.ShowMessage("Your game data was deleted. Starting over from scratch...");
+        SaveSystem.HardResetSavedData();
+        LoadData();
+    }
 }
