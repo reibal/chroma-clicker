@@ -3,23 +3,8 @@ using UnityEngine;
 
 public class PopUpMessageWindow : MonoBehaviour
 {
-    public static PopUpMessageWindow Instance { get; private set; }
-    
     [SerializeField]
     private TextMeshProUGUI shownText;
-
-    
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     public void ShowMessage(string message)
     {
