@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class ResourcesManager : MonoBehaviour
@@ -25,15 +24,13 @@ public class ResourcesManager : MonoBehaviour
             return;
         }
         Instance = this;
-
-        InitializeResources();
     }
 
-    private void InitializeResources()
+    public void InitializeResources(int[] resourcesAmounts)
     {
+        EmptyResourcesList();
         resources = new ResourceRuntimeData[resourceDataList.Length];
         bool renderNext = true;
-        int[] resourcesAmounts = SaveSystem.Load().GetResourcesAmounts();
         for (int i = 0; i < resourceDataList.Length; i++)
         {
             resourceDataList[i].resourceIndex = i;
@@ -59,6 +56,14 @@ public class ResourcesManager : MonoBehaviour
         ResourceListItem item = Instantiate(resourcePrefab, resourcesContainer.transform);
         resources[resourceIndex].AssignGameObject(item);
         item.Initialize(resources[resourceIndex]);
+    }
+
+    private void EmptyResourcesList()
+    {
+        for (int i = 0; i < resourcesContainer.transform.childCount; i++)
+        {
+            Destroy(resourcesContainer.transform.GetChild(i).gameObject);
+        }
     }
 
     public void PurchaseResource(int resourceIndex)

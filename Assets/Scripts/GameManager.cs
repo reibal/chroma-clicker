@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
         // Total chroma from saved data
         currentChroma = saveData.GetCurrentChroma();
         UIManager.Instance.SetCurrentChromaUI(saveData.currentChroma);
+        // Initialize resources with saved data
+        ResourcesManager.Instance.InitializeResources(saveData.GetResourcesAmounts());
         // With the updated values, recalculate chroma per second (and click increase)
         RecalculateTotalChromaPerSecond();
         // Add extra afk-farmed chroma
@@ -87,8 +89,8 @@ public class GameManager : MonoBehaviour
 
     private void AddAfkFarmedChroma(long elapsedSeconds)
     {
-        // Do nothing if less than 2 minutes passed since last session
-        if (elapsedSeconds < 120) return;
+        // Do nothing if no chroma is being generated, or if less than 2 minutes passed since last session
+        if (chromaPerSecond == 0 || elapsedSeconds < 120) return;
         // Increase chroma and show message to player
         float obtainedChroma = Mathf.Round(chromaPerSecond * elapsedSeconds * 0.4f);
         string timeLapse = Utils.FormatTimeLapseFromSeconds(elapsedSeconds);
