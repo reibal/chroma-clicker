@@ -37,7 +37,14 @@ public static class Utils
         // For larger numbers, calculate suffix
         int powExp = Mathf.FloorToInt(Mathf.Log10(value));
         int suffixIndex = Mathf.FloorToInt(powExp / 3);
-        float powBase = value / Mathf.Pow(10, suffixIndex * 3);
+        double powBase = value / Math.Pow(10, suffixIndex * 3);
+        // FIX: Prevent 0.99M (or the like) from happening
+        if (powBase < 1 && suffixIndex > 0)
+        {
+            suffixIndex--;
+            powBase = value / Math.Pow(10, suffixIndex * 3);
+        }
+        powBase = Math.Floor(powBase * 100) / 100f;
         string suffix = suffixIndex < SUFFIXES.Length ? SUFFIXES[suffixIndex] : $"e{powExp}";
         return $"{powBase:F2}{suffix}";
     }

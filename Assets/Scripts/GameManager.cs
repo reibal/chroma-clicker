@@ -17,9 +17,6 @@ public class GameManager : MonoBehaviour
     private readonly float loopDelaySeconds = 0.05f; // 0.05f delay = 20 recalculations per second
     private readonly int autosaveDelaySeconds = 5;
 
-    // Flags
-    private bool isGameStarted = false;
-
     void Awake()
     {
         if (Instance != null)
@@ -37,18 +34,14 @@ public class GameManager : MonoBehaviour
         // Coroutine loops
         StartCoroutine(ChromaPerSecondLoop());
         StartCoroutine(AutoSaveLoop());
-        // Enable safety flag
-        isGameStarted = true;
     }
 
-    void OnEnable()
+    void OnApplicationFocus()
     {
-        if (!isGameStarted) return;
-        // Add extra afk-farmed chroma
         AddAfkFarmedChroma(SaveSystem.Load().GetSecondsFromLastSession());
     }
 
-    void OnDisable()
+    void OnApplicationPause()
     {
         SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources);
     }
@@ -64,6 +57,8 @@ public class GameManager : MonoBehaviour
         ResourcesManager.Instance.InitializeResources(saveData.GetResourcesAmounts());
         // With the updated values, recalculate chroma per second (and click increase)
         RecalculateTotalChromaPerSecond();
+        // Add chroma farmed while afk
+        AddAfkFarmedChroma(saveData.GetSecondsFromLastSession());
     }
 
     public void OnChromaClicked()
