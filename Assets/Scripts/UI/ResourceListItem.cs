@@ -15,26 +15,26 @@ public class ResourceListItem : MonoBehaviour
     public void Initialize(ResourceRuntimeData resource)
     {
         this.resource = resource;
-        iconImage.sprite = resource.resourceData.icon;
-        titleTMP.text = resource.resourceData.resourceName;
-        descriptionTMP.text = resource.resourceData.description;
+        iconImage.sprite = resource.ResourceIcon;
+        titleTMP.text = resource.ResourceName;
+        descriptionTMP.text = resource.ResourceDescription;
         UpdatePurchaseButtonText();
         UpdateAmountText();
     }
 
     public void OnPurchaseButtonClicked()
     {
-        ResourcesManager.Instance.PurchaseResource(resource.resourceData.resourceIndex);
+        ResourcesManager.Instance.PurchaseResource(resource.ResourceIndex);
     }
 
     public void UpdatePurchaseButtonText()
     {
-        purchaseButtonTMP.text = $"Buy for {resource.GetUpgradeCost()} Chroma";
+        purchaseButtonTMP.text = $"Buy for {resource.UpgradeCost} Chroma";
     }
     
     public void UpdateAmountText()
     {
-        amountTMP.text = resource.amount.ToString();
+        amountTMP.text = resource.Amount.ToString();
     }
 
 }

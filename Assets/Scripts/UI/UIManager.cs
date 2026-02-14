@@ -33,12 +33,12 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnChromaClicked();
     }
 
-    public void SetCurrentChroma(float amount)
+    public void SetCurrentChromaUI(float amount)
     {
         currentChromaText.text = Mathf.FloorToInt(amount).ToString() + " Chroma";
     }
 
-    public void SetChromaPerSecond(float amount)
+    public void SetChromaPerSecondUI(float amount)
     {
         // Show up to 2 decimals 
         chromaPerSecondText.text = $"{amount:F2} cps";

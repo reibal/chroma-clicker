@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,53 +5,54 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    // Game logic
     [SerializeField] private float currentChroma = 0f;
+    private float chromaPerSecond = 0f;
     private float chromaIncreasePerClick = 1f;
 
-    private float chromaPerSecond = 0f;
+    // Public getters
+    public float CurrentChroma => currentChroma;
 
+    // Delays for loops
     private readonly float loopDelaySeconds = 0.05f; // 0.05f delay = 20 recalculations per second
     private readonly int autosaveDelaySeconds = 5;
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
     }
 
     void Start()
     {
-        // Load saved data
-        SaveData saveData = SaveSystem.Load();
-        // Total chroma
-        currentChroma = saveData.GetCurrentChroma();
-        UIManager.Instance.SetCurrentChroma(saveData.currentChroma);
-        // Chroma per second
-        RecalculateTotalChromaPerSecond();
-        // Add extra afk-farmed chroma
-        AddAfkFarmedChroma(saveData.GetSecondsFromLastSession());
+        // Load from save file (it will be created if it doesn't exist)
+        LoadData();
         // Coroutine loops
         StartCoroutine(ChromaPerSecondLoop());
         StartCoroutine(AutoSaveLoop());
     }
 
-    void OnApplicationQuit()
+    private void LoadData()
     {
-        SaveData();
+        // Load saved data
+        SaveData saveData = SaveSystem.Load();
+        // Total chroma from saved data
+        currentChroma = saveData.GetCurrentChroma();
+        UIManager.Instance.SetCurrentChromaUI(saveData.currentChroma);
+        // With the updated values, recalculate chroma per second (and click increase)
+        RecalculateTotalChromaPerSecond();
+        // Add extra afk-farmed chroma
+        AddAfkFarmedChroma(saveData.GetSecondsFromLastSession());
     }
-
 
     public void OnChromaClicked()
     {
         currentChroma += chromaIncreasePerClick;
-        UIManager.Instance.SetCurrentChroma(currentChroma);
+        UIManager.Instance.SetCurrentChromaUI(currentChroma);
     }
 
     IEnumerator ChromaPerSecondLoop()
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             currentChroma += chromaPerSecond * loopDelaySeconds;
-            UIManager.Instance.SetCurrentChroma(currentChroma);
+            UIManager.Instance.SetCurrentChromaUI(currentChroma);
             yield return new WaitForSeconds(loopDelaySeconds);
         }
     }
@@ -69,19 +69,9 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            SaveData();
             yield return new WaitForSeconds(autosaveDelaySeconds);
+            SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources);
         }
-    }
-
-    private void SaveData()
-    {
-        SaveSystem.Save(currentChroma, ResourcesManager.Instance.GetResourceRuntimeDataList());
-    }
-
-    public float GetCurrentChroma()
-    {
-        return currentChroma;
     }
 
     public bool SpendChroma(float amount)
@@ -89,7 +79,7 @@ public class GameManager : MonoBehaviour
         if (currentChroma >= amount)
         {
             currentChroma -= amount;
-            UIManager.Instance.SetCurrentChroma(currentChroma);
+            UIManager.Instance.SetCurrentChromaUI(currentChroma);
             return true;
         }
         return false;
@@ -97,15 +87,21 @@ public class GameManager : MonoBehaviour
 
     private void AddAfkFarmedChroma(long elapsedSeconds)
     {
-        float obtainedChroma = chromaPerSecond * elapsedSeconds * 0.4f;
-        UIManager.Instance.ShowMessage("You got " + obtainedChroma + " chroma while you were AFK.");
+        // Do nothing if less than 2 minutes passed since last session
+        if (elapsedSeconds < 120) return;
+        // Increase chroma and show message to player
+        float obtainedChroma = Mathf.Round(chromaPerSecond * elapsedSeconds * 0.4f);
+        string timeLapse = Utils.FormatTimeLapseFromSeconds(elapsedSeconds);
+        UIManager.Instance.ShowMessage("You were away for " + timeLapse + ". You got " + obtainedChroma + " chroma while you were AFK.");
         currentChroma += obtainedChroma;
+        // Save data to prevent showing the same message again
+        SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources);
     }
 
     public void RecalculateTotalChromaPerSecond()
     {
         chromaPerSecond = ResourcesManager.Instance.CalculateTotalChromaPerSecond();
-        UIManager.Instance.SetChromaPerSecond(chromaPerSecond);
+        UIManager.Instance.SetChromaPerSecondUI(chromaPerSecond);
         chromaIncreasePerClick = 1f + (chromaPerSecond * 0.05f); // Each click is = 1 + (5% of cps)
     }
 }

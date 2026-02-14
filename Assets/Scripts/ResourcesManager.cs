@@ -13,38 +13,49 @@ public class ResourcesManager : MonoBehaviour
     [SerializeField] private ResourceData[] resourceDataList;
     private ResourceRuntimeData[] resources;
 
+    // Public getters
+    public ResourceRuntimeData[] Resources => resources;
+
     void Awake()
     {
+        // Singleton pattern implementation
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
         Instance = this;
-        resources = new ResourceRuntimeData[resourceDataList.Length];
 
+        InitializeResources();
+    }
+
+    private void InitializeResources()
+    {
+        resources = new ResourceRuntimeData[resourceDataList.Length];
         bool renderNext = true;
         int[] resourcesAmounts = SaveSystem.Load().GetResourcesAmounts();
         for (int i = 0; i < resourceDataList.Length; i++)
         {
             resourceDataList[i].resourceIndex = i;
-            ResourceRuntimeData resource = new();
-            resource.Initialize(resourceDataList[i]);
-            resource.amount = resourcesAmounts[i];
-            resources[i] = resource;
+            resources[i] = new(resourceDataList[i]);
+            if (i < resourcesAmounts.Length)
+            {
+                resources[i].SetAmount(resourcesAmounts[i]);
+            }
             if (renderNext)
             {
                 InstantiateResource(i);
             }
-            if (resource.amount <= 0)
-            {
-                renderNext = false;
-            }
+            renderNext = resources[i].Amount > 0;
         }
     }
 
     private void InstantiateResource(int resourceIndex)
     {
+        if (resourceIndex >= resourceDataList.Length)
+        {
+            return;
+        }
         ResourceListItem item = Instantiate(resourcePrefab, resourcesContainer.transform);
         resources[resourceIndex].AssignGameObject(item);
         item.Initialize(resources[resourceIndex]);
@@ -53,18 +64,17 @@ public class ResourcesManager : MonoBehaviour
     public void PurchaseResource(int resourceIndex)
     {
         ResourceRuntimeData resource = resources[resourceIndex];
-        int cost = resource.GetUpgradeCost();
-        bool canAfford = GameManager.Instance.SpendChroma(cost);
+        bool canAfford = GameManager.Instance.SpendChroma(resource.UpgradeCost);
         if (!canAfford)
         {
-            Debug.Log($"Not enough Chroma to purchase {resource.resourceData.resourceName}. Required: {cost}, Current: {GameManager.Instance.GetCurrentChroma()}");
+            Debug.Log($"Not enough Chroma to purchase {resource.ResourceName}. Required: {resource.UpgradeCost}, Current: {GameManager.Instance.CurrentChroma}");
             return;
         }
-        Debug.Log($"Purchasing resource: {resource.resourceData.resourceName} for {cost} Chroma.");
+        Debug.Log($"Purchasing resource: {resource.ResourceName} for {resource.UpgradeCost} Chroma.");
         resource.IncreaseAmountBy(1);
         GameManager.Instance.RecalculateTotalChromaPerSecond();
-        // If this is the first purchased resource of this tier, and it's not the last tier, instantiate the next tier
-        if (resources[resourceIndex].amount == 1 && resourceIndex + 1 < resourceDataList.Length)
+        // If the player purchases this resource for the first time, and it's not the last tier, instantiate the next tier
+        if (resources[resourceIndex].Amount == 1 && resourceIndex + 1 < resourceDataList.Length)
         {
             InstantiateResource(resourceIndex + 1);
         }
@@ -75,15 +85,9 @@ public class ResourcesManager : MonoBehaviour
         float total = 0f;
         foreach (ResourceRuntimeData resource in resources)
         {
-            total += resource.GetChromaPerSecond();
+            total += resource.GeneratedChromaPerSecond;
         }
         return total;
-    }
-
-
-    public ResourceRuntimeData[] GetResourceRuntimeDataList()
-    {
-        return resources;
     }
 
     public ResourceData[] GetResourceDataList()

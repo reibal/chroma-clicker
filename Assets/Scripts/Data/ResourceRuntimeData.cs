@@ -4,13 +4,23 @@ using UnityEngine;
 public class ResourceRuntimeData
 {
     public ResourceListItem resourceGameObject;
-    public ResourceData resourceData;
-    public int amount;
+    private ResourceData resourceData;
+    private int amount;
 
-    public void Initialize(ResourceData resourceData)
+    // Public getters (simple)
+    public int ResourceIndex => resourceData.resourceIndex;
+    public int Amount => amount;
+    public string ResourceName => resourceData.resourceName;
+    public string ResourceDescription => resourceData.description;
+    public Sprite ResourceIcon => resourceData.icon;
+
+    // Public getters (calculated)
+    public int UpgradeCost => Mathf.CeilToInt(resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount));
+    public float GeneratedChromaPerSecond => resourceData.chromaPerSecond * amount;
+
+    public ResourceRuntimeData(ResourceData resourceData)
     {
         this.resourceData = resourceData;
-        // TODO: Load amount from save data
         amount = 0;
     }
 
@@ -19,14 +29,14 @@ public class ResourceRuntimeData
         resourceGameObject = gameObject;
     }
 
-    public int GetUpgradeCost()
+    public void SetAmount(int newAmount)
     {
-        return Mathf.CeilToInt(resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount));
-    }
-
-    public float GetChromaPerSecond()
-    {
-        return resourceData.chromaPerSecond * amount;
+        amount = newAmount;
+        if (resourceGameObject != null)
+        {
+            resourceGameObject.UpdateAmountText();
+            resourceGameObject.UpdatePurchaseButtonText();
+        }
     }
 
     public void IncreaseAmountBy(int increment)

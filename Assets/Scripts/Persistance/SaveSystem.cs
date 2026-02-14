@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public static class SaveSystem
@@ -19,7 +18,7 @@ public static class SaveSystem
         int[] resources = new int[runtimeResources.Length];
         for (int i = 0; i < runtimeResources.Length; i++)
         {
-            int resourceAmount = runtimeResources[i].amount;
+            int resourceAmount = runtimeResources[i].Amount;
             resources[i] = resourceAmount;
         }
 
