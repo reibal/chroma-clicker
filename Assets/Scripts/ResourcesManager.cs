@@ -90,7 +90,7 @@ public class ResourcesManager : MonoBehaviour
         float total = 0f;
         foreach (ResourceRuntimeData resource in resources)
         {
-            total += resource.GeneratedChromaPerSecond;
+            total += resource.TotalChromaPerSecond;
         }
         return total;
     }

@@ -7,6 +7,7 @@ public class ResourceListItem : MonoBehaviour
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI titleTMP;
     [SerializeField] private TextMeshProUGUI descriptionTMP;
+    [SerializeField] private TextMeshProUGUI chromaGeneratedTMP;
     [SerializeField] private TextMeshProUGUI purchaseButtonTMP;
     [SerializeField] private TextMeshProUGUI amountTMP;
 
@@ -18,6 +19,7 @@ public class ResourceListItem : MonoBehaviour
         iconImage.sprite = resource.ResourceIcon;
         titleTMP.text = resource.ResourceName;
         descriptionTMP.text = resource.ResourceDescription;
+        UpdateChromaGeneratedText();
         UpdatePurchaseButtonText();
         UpdateAmountText();
     }
@@ -25,6 +27,11 @@ public class ResourceListItem : MonoBehaviour
     public void OnPurchaseButtonClicked()
     {
         ResourcesManager.Instance.PurchaseResource(resource.ResourceIndex);
+    }
+
+    public void UpdateChromaGeneratedText()
+    {
+        chromaGeneratedTMP.text = $"+{resource.ChromaPerSecondEachResource} <sprite index=0> each. TOTAL: +{resource.TotalChromaPerSecond} <sprite index=0>.";
     }
 
     public void UpdatePurchaseButtonText()

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ResourceRuntimeData
 {
     public ResourceListItem resourceGameObject;
-    private ResourceData resourceData;
+    private readonly ResourceData resourceData;
     private int amount;
 
     // Public getters (simple)
@@ -13,10 +13,11 @@ public class ResourceRuntimeData
     public string ResourceName => resourceData.resourceName;
     public string ResourceDescription => resourceData.description;
     public Sprite ResourceIcon => resourceData.icon;
+    public float ChromaPerSecondEachResource => resourceData.chromaPerSecond;
 
     // Public getters (calculated)
     public int UpgradeCost => Mathf.CeilToInt(resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount));
-    public float GeneratedChromaPerSecond => resourceData.chromaPerSecond * amount;
+    public float TotalChromaPerSecond => resourceData.chromaPerSecond * amount;
 
     public ResourceRuntimeData(ResourceData resourceData)
     {
@@ -43,6 +44,7 @@ public class ResourceRuntimeData
     {
         amount += increment;
         resourceGameObject.UpdateAmountText();
+        resourceGameObject.UpdateChromaGeneratedText();
         resourceGameObject.UpdatePurchaseButtonText();
     }
 }
