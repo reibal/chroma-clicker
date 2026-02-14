@@ -13,11 +13,11 @@ public class ResourceRuntimeData
     public string ResourceName => resourceData.resourceName;
     public string ResourceDescription => resourceData.description;
     public Sprite ResourceIcon => resourceData.icon;
-    public float ChromaPerSecondEachResource => resourceData.chromaPerSecond;
+    public double ChromaPerSecondEachResource => resourceData.chromaPerSecond;
 
     // Public getters (calculated)
     public int UpgradeCost => Mathf.CeilToInt(resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount));
-    public float TotalChromaPerSecond => resourceData.chromaPerSecond * amount;
+    public double TotalChromaPerSecond => resourceData.chromaPerSecond * amount;
 
     public ResourceRuntimeData(ResourceData resourceData)
     {

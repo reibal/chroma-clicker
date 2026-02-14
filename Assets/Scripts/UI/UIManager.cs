@@ -33,13 +33,13 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnChromaClicked();
     }
 
-    public void SetCurrentChromaUI(float amount)
+    public void SetCurrentChromaUI(double amount)
     {
         string currentChromaFormatted = Utils.FormatBigNumber(amount, false);
         currentChromaText.text = $"{currentChromaFormatted} Chroma";
     }
 
-    public void SetChromaPerSecondUI(float amount)
+    public void SetChromaPerSecondUI(double amount)
     {
         // Fix to also show 2 decimals when below 1K
         string amountString = amount > 1000 ? Utils.FormatBigNumber(amount) : $"{amount:F2}";

@@ -6,7 +6,7 @@ public class ResourceData : ScriptableObject
     public int resourceIndex; // <-- To be set from the ResourcesManager class
     public string resourceName;
     public string description;
-    public float chromaPerSecond;
+    public double chromaPerSecond;
     public int baseCost;
     public float costIncreaseRatio;
     public Sprite icon;

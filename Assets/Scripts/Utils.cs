@@ -24,7 +24,7 @@ public static class Utils
         "", "K", "M", "B", "T", "Qa", "Qt", "Sx", "Sp", "Oc", "No", "Dc"
     };
 
-    public static string FormatBigNumber(float value, bool showDecimalsOnSmallNumbers = false)
+    public static string FormatBigNumber(double value, bool showDecimalsOnSmallNumbers = false)
     {
         if (value < 0)
         {
@@ -34,8 +34,9 @@ public static class Utils
         {
             return showDecimalsOnSmallNumbers ? value.ToString("0.##") : $"{value:F0}";
         }
+
         // For larger numbers, calculate suffix
-        int powExp = Mathf.FloorToInt(Mathf.Log10(value));
+        int powExp = (int)Math.Floor(Math.Log10(value));
         int suffixIndex = Mathf.FloorToInt(powExp / 3);
         double powBase = value / Math.Pow(10, suffixIndex * 3);
         // FIX: Prevent 0.99M (or the like) from happening

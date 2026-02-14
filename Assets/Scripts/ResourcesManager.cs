@@ -85,9 +85,9 @@ public class ResourcesManager : MonoBehaviour
         }
     }
 
-    public float CalculateTotalChromaPerSecond()
+    public double CalculateTotalChromaPerSecond()
     {
-        float total = 0f;
+        double total = 0f;
         foreach (ResourceRuntimeData resource in resources)
         {
             total += resource.TotalChromaPerSecond;

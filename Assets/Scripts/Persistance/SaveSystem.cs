@@ -5,7 +5,7 @@ public static class SaveSystem
     private static readonly string savePath = System.IO.Path.Combine(Application.persistentDataPath, "save.json");
     private static SaveData currentSaveData = null;
 
-    public static void Save(float currentChroma, ResourceRuntimeData[] runtimeResources)
+    public static void Save(double currentChroma, ResourceRuntimeData[] runtimeResources)
     {
         if (currentSaveData == null)
         {
@@ -78,7 +78,7 @@ public static class SaveSystem
         return currentSaveData;
     }
 
-    private static SaveData UpdateSaveDataVar(float currentChroma, int[] resources)
+    private static SaveData UpdateSaveDataVar(double currentChroma, int[] resources)
     {
         if (currentSaveData == null)
         {

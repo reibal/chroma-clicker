@@ -3,16 +3,16 @@ using System;
 [Serializable]
 public class SaveData
 {
-    public float currentChroma;
+    public double currentChroma;
     public int[] resourcesAmounts;
     public long lastSaveTimestamp = 0;
     
-    public SaveData(float currentChroma, int[] resourcesAmounts)
+    public SaveData(double currentChroma, int[] resourcesAmounts)
     {
         UpdateSaveData(currentChroma, resourcesAmounts);
     }
 
-    public SaveData UpdateSaveData(float currentChroma, int[] resourcesAmounts)
+    public SaveData UpdateSaveData(double currentChroma, int[] resourcesAmounts)
     {
         this.currentChroma = currentChroma;
         this.resourcesAmounts = resourcesAmounts;
@@ -20,7 +20,7 @@ public class SaveData
         return this;
     }
 
-    public float GetCurrentChroma()
+    public double GetCurrentChroma()
     {
         return currentChroma;
     }
