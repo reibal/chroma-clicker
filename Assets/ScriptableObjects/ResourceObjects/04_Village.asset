@@ -15,7 +15,7 @@ MonoBehaviour:
   resourceIndex: 4
   resourceName: Village
   description: In this village, many people will help gather some Chroma.
-  chromaPerSecond: 420
+  chromaPerSecond: 120
   baseCost: 36000
   costIncreaseRatio: 0.25
   icon: {fileID: 4734788938060851880, guid: cb9adfdc42ef7744295f8d111ab1f5eb, type: 3}

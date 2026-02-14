@@ -16,7 +16,7 @@ MonoBehaviour:
   resourceName: Special Stone
   description: Give this to Esquie to turn "woo" into "wee". He will be able to bring
     quite some chroma!
-  chromaPerSecond: 6
+  chromaPerSecond: 5
   baseCost: 840
   costIncreaseRatio: 0.2
   icon: {fileID: -5047970283769418188, guid: cd011905837097443a189d5fc773ff7b, type: 3}

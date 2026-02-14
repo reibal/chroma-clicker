@@ -15,7 +15,7 @@ MonoBehaviour:
   resourceIndex: 3
   resourceName: Nevron
   description: A nevron can be defeated for quite a bit of Chroma.
-  chromaPerSecond: 52
+  chromaPerSecond: 24
   baseCost: 6400
   costIncreaseRatio: 0.2
   icon: {fileID: 4852388362613743694, guid: 53d8395271498a143b3577ee2f1e76b0, type: 3}
