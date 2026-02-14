@@ -16,7 +16,7 @@ MonoBehaviour:
   resourceName: Corpse
   description: A corpse from a previous expedition. You could get some chroma from
     it.
-  chromaPerSecond: 2
+  chromaPerSecond: 1
   baseCost: 160
-  costIncreaseRatio: 0.15
+  costIncreaseRatio: 0.2
   icon: {fileID: 2354742914318534706, guid: 799b36129e755fb42a8ba81d95a7b3f0, type: 3}

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 561c76e8f32e68f44b55161fac9b53dd, type: 3}
-  m_Name: 03_Nevron
+  m_Name: 05_Brush
   m_EditorClassIdentifier: Assembly-CSharp::ResourceData
-  resourceIndex: 3
-  resourceName: Nevron
-  description: A nevron can be defeated for quite a bit of Chroma.
-  chromaPerSecond: 52
-  baseCost: 6400
-  costIncreaseRatio: 0.2
-  icon: {fileID: 4852388362613743694, guid: 53d8395271498a143b3577ee2f1e76b0, type: 3}
+  resourceIndex: 5
+  resourceName: Painting Brush
+  description: A brush that can use chroma to paint anything... even more chroma!
+  chromaPerSecond: 3200
+  baseCost: 720000
+  costIncreaseRatio: 0.3
+  icon: {fileID: 1600582937693692523, guid: 5c2cd71166276234b97964e956a45f2e, type: 3}
