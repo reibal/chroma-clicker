@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     private readonly float loopDelaySeconds = 0.05f; // 0.05f delay = 20 recalculations per second
     private readonly int autosaveDelaySeconds = 5;
 
+    // Flags
+    private bool isGameStarted = false;
+
     void Awake()
     {
         if (Instance != null)
@@ -34,6 +37,20 @@ public class GameManager : MonoBehaviour
         // Coroutine loops
         StartCoroutine(ChromaPerSecondLoop());
         StartCoroutine(AutoSaveLoop());
+        // Enable safety flag
+        isGameStarted = true;
+    }
+
+    void OnEnable()
+    {
+        if (!isGameStarted) return;
+        // Add extra afk-farmed chroma
+        AddAfkFarmedChroma(SaveSystem.Load().GetSecondsFromLastSession());
+    }
+
+    void OnDisable()
+    {
+        SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources);
     }
 
     private void LoadData()
@@ -47,8 +64,6 @@ public class GameManager : MonoBehaviour
         ResourcesManager.Instance.InitializeResources(saveData.GetResourcesAmounts());
         // With the updated values, recalculate chroma per second (and click increase)
         RecalculateTotalChromaPerSecond();
-        // Add extra afk-farmed chroma
-        AddAfkFarmedChroma(saveData.GetSecondsFromLastSession());
     }
 
     public void OnChromaClicked()
@@ -61,9 +76,9 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
+            yield return new WaitForSeconds(loopDelaySeconds);
             currentChroma += chromaPerSecond * loopDelaySeconds;
             UIManager.Instance.SetCurrentChromaUI(currentChroma);
-            yield return new WaitForSeconds(loopDelaySeconds);
         }
     }
 
@@ -89,7 +104,7 @@ public class GameManager : MonoBehaviour
 
     private void AddAfkFarmedChroma(long elapsedSeconds)
     {
-        // Do nothing if no chroma is being generated, or if less than 2 minutes passed since last session
+        // GUARD CLAUSE: Do nothing if no chroma is being generated, or if less than 2 minutes passed since last session
         if (chromaPerSecond == 0 || elapsedSeconds < 120) return;
         // Increase chroma and show message to player
         float obtainedChroma = Mathf.Round(chromaPerSecond * elapsedSeconds * 0.4f);
