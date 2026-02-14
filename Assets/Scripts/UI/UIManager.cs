@@ -35,13 +35,15 @@ public class UIManager : MonoBehaviour
 
     public void SetCurrentChromaUI(float amount)
     {
-        currentChromaText.text = Mathf.FloorToInt(amount).ToString() + " Chroma";
+        string currentChromaFormatted = Utils.FormatBigNumber(amount, false);
+        currentChromaText.text = $"{currentChromaFormatted} Chroma";
     }
 
     public void SetChromaPerSecondUI(float amount)
     {
-        // Show up to 2 decimals 
-        chromaPerSecondText.text = $"{amount:F2} cps";
+        // Fix to also show 2 decimals when below 1K
+        string amountString = amount > 1000 ? Utils.FormatBigNumber(amount) : $"{amount:F2}";
+        chromaPerSecondText.text = $"{amountString} cps";
     }
 
     public void ShowMessage(string message)

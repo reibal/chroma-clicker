@@ -31,14 +31,17 @@ public class ResourceListItem : MonoBehaviour
 
     public void UpdateChromaGeneratedText()
     {
-        chromaGeneratedTMP.text = $"+{resource.ChromaPerSecondEachResource} <sprite index=0> each. TOTAL: +{resource.TotalChromaPerSecond} <sprite index=0>.";
+        string chromaPerSecondEachResourceString = Utils.FormatBigNumber(resource.ChromaPerSecondEachResource);
+        string totalChromaPerSecondString = Utils.FormatBigNumber(resource.TotalChromaPerSecond);
+        chromaGeneratedTMP.text = $"+{totalChromaPerSecondString} <sprite index=0>/s  (+{chromaPerSecondEachResourceString} <sprite index=0>/s each)";
     }
 
     public void UpdatePurchaseButtonText()
     {
-        purchaseButtonTMP.text = $"Buy for {resource.UpgradeCost} Chroma";
+        string upgradeCostString = Utils.FormatBigNumber(resource.UpgradeCost);
+        purchaseButtonTMP.text = $"Buy for {upgradeCostString} Chroma";
     }
-    
+
     public void UpdateAmountText()
     {
         amountTMP.text = resource.Amount.ToString();
