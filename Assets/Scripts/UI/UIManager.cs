@@ -40,11 +40,12 @@ public class UIManager : MonoBehaviour
         currentChromaText.text = $"{currentChromaFormatted} Chroma";
     }
 
-    public void SetChromaPerSecondUI(double amount)
+    public void SetChromaPerSecondUI(double chromaAmount, float prestigeBonus = 0f)
     {
         // Fix to also show 2 decimals when below 1K
-        string amountString = amount > 1000 ? Utils.FormatBigNumber(amount) : $"{amount:F2}";
-        chromaPerSecondText.text = $"{amountString} cps";
+        string amountString = chromaAmount > 1000 ? Utils.FormatBigNumber(chromaAmount) : $"{chromaAmount:F2}";
+        string prestigeBonusString = prestigeBonus > 0f ? $"(+{prestigeBonus:0.##}%)": "";
+        chromaPerSecondText.text = $"{amountString} cps {prestigeBonusString}";
     }
 
     public void ShowInfoMessage(string message)

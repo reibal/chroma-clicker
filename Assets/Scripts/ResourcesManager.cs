@@ -9,7 +9,7 @@ public class ResourcesManager : MonoBehaviour
     [SerializeField] private ResourceListItem resourcePrefab;
 
     [Header("Resources")]
-    [SerializeField] private ResourceData[] resourceDataList;
+    [SerializeField] private ResourceData[] resourcesDataList;
     private ResourceRuntimeData[] resources;
 
     // Public getters
@@ -29,12 +29,12 @@ public class ResourcesManager : MonoBehaviour
     public void InitializeResources(int[] resourcesAmounts)
     {
         EmptyResourcesList();
-        resources = new ResourceRuntimeData[resourceDataList.Length];
+        resources = new ResourceRuntimeData[resourcesDataList.Length];
         bool renderNext = true;
-        for (int i = 0; i < resourceDataList.Length; i++)
+        for (int i = 0; i < resourcesDataList.Length; i++)
         {
-            resourceDataList[i].resourceIndex = i;
-            resources[i] = new(resourceDataList[i]);
+            resourcesDataList[i].resourceIndex = i;
+            resources[i] = new(resourcesDataList[i]);
             if (i < resourcesAmounts.Length)
             {
                 resources[i].SetAmount(resourcesAmounts[i]);
@@ -49,13 +49,31 @@ public class ResourcesManager : MonoBehaviour
 
     private void InstantiateResource(int resourceIndex)
     {
-        if (resourceIndex >= resourceDataList.Length)
+        if (resourceIndex >= resourcesDataList.Length)
         {
             return;
         }
         ResourceListItem item = Instantiate(resourcePrefab, resourcesContainer.transform);
         resources[resourceIndex].AssignGameObject(item);
         item.Initialize(resources[resourceIndex]);
+    }
+
+    
+    private int[] GetDefaultResourceAmounts()
+    {
+        int[] defaultAmounts = new int[resourcesDataList.Length];
+        for (int i = 0; i < resourcesDataList.Length; i++)
+        {
+            defaultAmounts[i] = 0;
+        }
+        return defaultAmounts;
+    }
+
+
+    public void ResetResourcesList()
+    {
+        EmptyResourcesList();
+        InitializeResources(GetDefaultResourceAmounts());
     }
 
     private void EmptyResourcesList()
@@ -79,7 +97,7 @@ public class ResourcesManager : MonoBehaviour
         resource.IncreaseAmountBy(1);
         GameManager.Instance.RecalculateTotalChromaPerSecond();
         // If the player purchases this resource for the first time, and it's not the last tier, instantiate the next tier
-        if (resources[resourceIndex].Amount == 1 && resourceIndex + 1 < resourceDataList.Length)
+        if (resources[resourceIndex].Amount == 1 && resourceIndex + 1 < resourcesDataList.Length)
         {
             InstantiateResource(resourceIndex + 1);
         }
@@ -95,9 +113,9 @@ public class ResourcesManager : MonoBehaviour
         return total;
     }
 
-    public ResourceData[] GetResourceDataList()
+    public ResourceData[] GetResourcesDataList()
     {
-        return resourceDataList;
+        return resourcesDataList;
     }
 
     public void RevalidatePurchaseButtonsAvailability(double currentChroma)

@@ -5,7 +5,7 @@ public static class SaveSystem
     private static readonly string savePath = System.IO.Path.Combine(Application.persistentDataPath, "save.json");
     private static SaveData currentSaveData = null;
 
-    public static void Save(double currentChroma, ResourceRuntimeData[] runtimeResources)
+    public static void Save(double currentChroma, ResourceRuntimeData[] runtimeResources, int pureChroma)
     {
         if (currentSaveData == null)
         {
@@ -22,7 +22,7 @@ public static class SaveSystem
             resources[i] = resourceAmount;
         }
 
-        UpdateSaveDataVar(currentChroma, resources);
+        UpdateSaveDataVar(currentChroma, resources, pureChroma);
         SaveToFile();
     }
 
@@ -68,7 +68,8 @@ public static class SaveSystem
         // Default values (if file does not exist yet)
         int currentChroma = 0; // int currentChroma = chromaFromFile || 0;
         int[] resources = GetDefaultResourceAmountsForSaveData(); // int[] resources = resourcesFromFile || GetDefaultResourceAmounts();
-        return UpdateSaveDataVar(currentChroma, resources);
+        int pureChroma = 0;
+        return UpdateSaveDataVar(currentChroma, resources, pureChroma);
     }
 
     public static SaveData HardResetSavedData()
@@ -78,22 +79,22 @@ public static class SaveSystem
         return currentSaveData;
     }
 
-    private static SaveData UpdateSaveDataVar(double currentChroma, int[] resources)
+    private static SaveData UpdateSaveDataVar(double currentChroma, int[] resources, int pureChroma)
     {
         if (currentSaveData == null)
         {
-            currentSaveData = new SaveData(currentChroma, resources);
+            currentSaveData = new SaveData(currentChroma, resources, pureChroma);
         }
         else
         {
-            currentSaveData.UpdateSaveData(currentChroma, resources);
+            currentSaveData.UpdateSaveData(currentChroma, resources, pureChroma);
         }
         return currentSaveData;
     }
 
     private static int[] GetDefaultResourceAmountsForSaveData()
     {
-        ResourceData[] resourcesDataList = ResourcesManager.Instance.GetResourceDataList();
+        ResourceData[] resourcesDataList = ResourcesManager.Instance.GetResourcesDataList();
         int[] defaultAmounts = new int[resourcesDataList.Length];
         for (int i = 0; i < resourcesDataList.Length; i++)
         {

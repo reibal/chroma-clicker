@@ -10,9 +10,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private double currentChroma = 0f;
     private double chromaPerSecond = 0f;
     private double chromaIncreasePerClick = 1f;
+    [SerializeField] private int pureChroma = 0; // <-- Used to calculate prestigeBonus
 
     // Public getters
     public double CurrentChroma => currentChroma;
+    public int PureChroma => pureChroma;
 
     // Delays for loops
     private readonly float loopDelaySeconds = 0.05f; // 0.05f delay = 20 recalculations per second
@@ -44,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     void OnApplicationPause()
     {
-        SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources);
+        SaveData();
     }
 
     private void LoadData()
@@ -54,6 +56,8 @@ public class GameManager : MonoBehaviour
         // Total chroma from saved data
         currentChroma = saveData.GetCurrentChroma();
         UIManager.Instance.SetCurrentChromaUI(saveData.currentChroma);
+        // Pure chroma (prestige) from saved data
+        pureChroma = saveData.GetPureChroma();
         // Initialize resources with saved data
         ResourcesManager.Instance.InitializeResources(saveData.GetResourcesAmounts());
         // With the updated values, recalculate chroma per second (and click increase)
@@ -62,30 +66,15 @@ public class GameManager : MonoBehaviour
         AddAfkFarmedChroma(saveData.GetSecondsFromLastSession());
     }
 
+    private void SaveData()
+    {
+        SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources, pureChroma);
+    }
+
     public void OnChromaClicked()
     {
         currentChroma += chromaIncreasePerClick;
         UIManager.Instance.SetCurrentChromaUI(currentChroma);
-    }
-
-    IEnumerator ChromaPerSecondLoop()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(loopDelaySeconds);
-            currentChroma += chromaPerSecond * loopDelaySeconds;
-            UIManager.Instance.SetCurrentChromaUI(currentChroma);
-            ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(currentChroma);
-        }
-    }
-
-    IEnumerator AutoSaveLoop()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(autosaveDelaySeconds);
-            SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources);
-        }
     }
 
     public bool SpendChroma(double amount)
@@ -109,15 +98,30 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowInfoMessage("You were away for " + timeLapse + ". You got " + obtainedChroma + " chroma while you were AFK.");
         currentChroma += obtainedChroma;
         // Save data to prevent showing the same message again
-        SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources);
+        SaveData();
     }
 
     public void RecalculateTotalChromaPerSecond()
     {
-        chromaPerSecond = ResourcesManager.Instance.CalculateTotalChromaPerSecond();
-        UIManager.Instance.SetChromaPerSecondUI(chromaPerSecond);
-        chromaIncreasePerClick = 1f + (chromaPerSecond * 0.05f); // Each click is = 1 + (5% of cps)
+        float prestigeBonus = Prestige.CalculateIncreaseFromPureChroma(pureChroma);
+        chromaPerSecond = ResourcesManager.Instance.CalculateTotalChromaPerSecond() * (1 + (prestigeBonus / 100));
+        UIManager.Instance.SetChromaPerSecondUI(chromaPerSecond, prestigeBonus);
+        chromaIncreasePerClick = 1f + (chromaPerSecond * 0.02f); // Each click is = 1 + (2% of cps)
         ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(currentChroma);
+    }
+
+    // Running prestige will set currentChroma to 0, all resources to none, and will increase the 
+    public void ActivatePrestige()
+    {
+        int pureChromaGained = Prestige.CalculatePureChromaFromChroma(currentChroma);
+        // Increase pure chroma
+        pureChroma += pureChromaGained;
+        // Reset chroma and resources
+        currentChroma = 0;
+        UIManager.Instance.SetCurrentChromaUI(0);
+        ResourcesManager.Instance.ResetResourcesList();
+        // With the updated values, recalculate chroma per second (and click increase)
+        RecalculateTotalChromaPerSecond();
     }
 
     public void OnHardResetButtonClicked()
@@ -131,5 +135,27 @@ public class GameManager : MonoBehaviour
                 LoadData();
             }
         );
+    }
+
+    // ------- Loops (Coroutines) -------
+    // CPS loop (auto-generated currency)
+    IEnumerator ChromaPerSecondLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(loopDelaySeconds);
+            currentChroma += chromaPerSecond * loopDelaySeconds;
+            UIManager.Instance.SetCurrentChromaUI(currentChroma);
+            ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(currentChroma);
+        }
+    }
+    // Auto-Save
+    IEnumerator AutoSaveLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(autosaveDelaySeconds);
+            SaveData();
+        }
     }
 }
