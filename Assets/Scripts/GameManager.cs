@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
     private double chromaIncreasePerClick = 1f;
     [SerializeField] private int pureChroma = 0; // <-- Used to calculate prestigeBonus
 
-    [Header("Extras")]
-    [SerializeField] private ParticleSystem clickParticlesPrefab;
-
     // Public getters
     public double CurrentChroma => currentChroma;
     public int PureChroma => pureChroma;
@@ -61,8 +58,7 @@ public class GameManager : MonoBehaviour
         currentChroma += chromaIncreasePerClick;
         UIManager.Instance.SetCurrentChromaUI(currentChroma);
 
-        // TODO: Change prefab position to mouse position
-        Instantiate(clickParticlesPrefab);
+        UIManager.Instance.ShowDisplayInfoOnChromaClicked();
     }
 
     // Recalculate CPS (to be called on changes on resources or prestige)

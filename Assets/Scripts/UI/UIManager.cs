@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private InfoMessageWindow infoMessageWindow;
     [SerializeField] private ConfirmMessageWindow confirmMessageWindow;
 
+    [Header("Effects")]
+    [SerializeField] private ParticleSystem clickParticleSystemPrefab;
+
     void Awake()
     {
         if (Instance == null)
@@ -27,11 +30,6 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    public void OnChromaClicked()
-    {
-        GameManager.Instance.OnChromaClicked();
     }
 
     public void SetCurrentChromaUI(double amount)
@@ -57,5 +55,13 @@ public class UIManager : MonoBehaviour
     {
         confirmMessageWindow.SetCallbackOnConfirm(callbackOnConfirm);
         confirmMessageWindow.ShowMessage(message);
+    }
+
+    public void ShowDisplayInfoOnChromaClicked() {
+        // Show particle system on click
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = Camera.main.nearClipPlane + 1f;
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Instantiate(clickParticleSystemPrefab, worldPosition, Quaternion.identity);
     }
 }

@@ -1764,7 +1764,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   currentChroma: 0
   pureChroma: 0
-  clickParticlesPrefab: {fileID: 1816489701510802692, guid: b0199a188c651a94aa7998e440abdf37, type: 3}
 --- !u!4 &804994276
 Transform:
   m_ObjectHideFlags: 0
@@ -2503,6 +2502,7 @@ MonoBehaviour:
   chromaPerSecondText: {fileID: 1855750596}
   infoMessageWindow: {fileID: 2008774037}
   confirmMessageWindow: {fileID: 1184024843}
+  clickParticleSystemPrefab: {fileID: 1816489701510802692, guid: b0199a188c651a94aa7998e440abdf37, type: 3}
 --- !u!1 &973603381
 GameObject:
   m_ObjectHideFlags: 0
@@ -3908,7 +3908,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1376037349}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 804994275}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: OnChromaClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1376037349
 MonoBehaviour:
   m_ObjectHideFlags: 0
