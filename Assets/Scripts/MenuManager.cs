@@ -5,13 +5,15 @@ public class MenuManager : MonoBehaviour
 
     public static MenuManager Instance { get; private set; }
 
-    [SerializeField] private GameObject homeMenu;
-    [SerializeField] private GameObject upgradesMenu;
-    [SerializeField] private GameObject battleMenu;
-    [SerializeField] private GameObject settingsMenu;
+	[Header("Menu Screens")]
+    [SerializeField] private GameObject homeMenuScreen;
+    [SerializeField] private GameObject resourcesMenuScreen;
+    [SerializeField] private GameObject battleMenuScreen;
+    [SerializeField] private GameObject settingsMenuScreen;
 
+	[Header("Menu Navigation (Buttons)")]
 	[SerializeField] private GameObject homeMenuButton;
-    [SerializeField] private GameObject upgradesMenuButton;
+    [SerializeField] private GameObject resourcesMenuButton;
     [SerializeField] private GameObject battleMenuButton;
     [SerializeField] private GameObject settingsMenuButton;
 
@@ -36,30 +38,30 @@ public class MenuManager : MonoBehaviour
 
     public void OpenHomeMenu()
     {
-		OpenMenu(homeMenu, homeMenuButton);
+		OpenMenu(homeMenuScreen, homeMenuButton);
 	}
 
-    public void OpenUpgradesMenu()
+    public void OpenResourcesMenu()
     {
-		OpenMenu(upgradesMenu, upgradesMenuButton);
+		OpenMenu(resourcesMenuScreen, resourcesMenuButton);
     }
 
 	public void OpenBattleMenu()
 	{
-		OpenMenu(battleMenu, battleMenuButton);
+		OpenMenu(battleMenuScreen, battleMenuButton);
 	}
 
 	public void OpenSettingsMenu()
 	{
-		OpenMenu(settingsMenu, settingsMenuButton);
+		OpenMenu(settingsMenuScreen, settingsMenuButton);
 	}
 
     private void CloseAllMenus()
     {
-        homeMenu.SetActive(false);
-        upgradesMenu.SetActive(false);
-		battleMenu.SetActive(false);
-		settingsMenu.SetActive(false);
+        homeMenuScreen.SetActive(false);
+        resourcesMenuScreen.SetActive(false);
+		battleMenuScreen.SetActive(false);
+		settingsMenuScreen.SetActive(false);
     }
 
 	private void OpenMenu(GameObject menu, GameObject button)
@@ -83,7 +85,7 @@ public class MenuManager : MonoBehaviour
 	private void ResetAllButtons()
 	{
 		ResetButton(homeMenuButton);
-		ResetButton(upgradesMenuButton);
+		ResetButton(resourcesMenuButton);
 		ResetButton(battleMenuButton);
 		ResetButton(settingsMenuButton);
 	}
