@@ -7,10 +7,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     // Game logic
+    [Header("Game Variables")]
     [SerializeField] private double currentChroma = 0f;
     private double chromaPerSecond = 0f;
     private double chromaIncreasePerClick = 1f;
     [SerializeField] private int pureChroma = 0; // <-- Used to calculate prestigeBonus
+
+    [Header("Extras")]
+    [SerializeField] private ParticleSystem clickParticlesPrefab;
 
     // Public getters
     public double CurrentChroma => currentChroma;
@@ -49,6 +53,87 @@ public class GameManager : MonoBehaviour
         SaveData();
     }
 
+    #region Chroma Management (click, cps, purchase...)
+
+    // Click on chroma (to generate chroma on click)
+    public void OnChromaClicked()
+    {
+        currentChroma += chromaIncreasePerClick;
+        UIManager.Instance.SetCurrentChromaUI(currentChroma);
+
+        // TODO: Change prefab position to mouse position
+        Instantiate(clickParticlesPrefab);
+    }
+
+    // Recalculate CPS (to be called on changes on resources or prestige)
+    public void RecalculateTotalChromaPerSecond()
+    {
+        float prestigeBonus = Prestige.CalculateIncreaseFromPureChroma(pureChroma);
+        chromaPerSecond = ResourcesManager.Instance.CalculateTotalChromaPerSecond() * (1 + (prestigeBonus / 100));
+        UIManager.Instance.SetChromaPerSecondUI(chromaPerSecond, prestigeBonus);
+        chromaIncreasePerClick = 1f + (chromaPerSecond * 0.02f); // Each click is = 1 + (2% of cps)
+        ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(currentChroma);
+    }
+
+    // Spend chroma (returns true if chroma was spent, or false if insufficient)
+    public bool SpendChroma(double amount)
+    {
+        if (currentChroma >= amount)
+        {
+            currentChroma -= amount;
+            UIManager.Instance.SetCurrentChromaUI(currentChroma);
+            return true;
+        }
+        return false;
+    }
+
+    // Method to be called when coming back to the game after being AFK, to obtain chroma as a reward
+    private void AddAfkFarmedChroma(long elapsedSeconds)
+    {
+        // GUARD CLAUSE: Do nothing if no chroma is being generated, or if less than 2 minutes passed since last session
+        if (chromaPerSecond == 0 || elapsedSeconds < 120) return;
+        // Increase chroma and show message to player
+        double obtainedChroma = Math.Round(chromaPerSecond * elapsedSeconds * 0.4f);
+        string obtainedChromaString = Utils.FormatBigNumber(obtainedChroma);
+        string secondsAfk = Utils.FormatTimeLapseFromSeconds(elapsedSeconds);
+        UIManager.Instance.ShowInfoMessage("You were away for " + secondsAfk + ". You got " + obtainedChromaString + " chroma while you were AFK.");
+        currentChroma += obtainedChroma;
+    }
+    #endregion
+
+    #region Pure Chroma Management (Prestige)
+    // Running prestige will set currentChroma to 0, all resources to none, and will increase the 
+    public void ActivatePrestige()
+    {
+        int pureChromaGained = Prestige.CalculatePureChromaFromChroma(currentChroma);
+        // Increase pure chroma
+        pureChroma += pureChromaGained;
+        // Reset chroma and resources
+        currentChroma = 0;
+        UIManager.Instance.SetCurrentChromaUI(0);
+        ResourcesManager.Instance.ResetResourcesList();
+        // With the updated values, recalculate chroma per second (and click increase)
+        RecalculateTotalChromaPerSecond();
+    }
+    #endregion
+
+    #region Other Buttons (Event Handlers)
+    // Click on "Hard Reset" (with double check)
+    public void OnHardResetButtonClicked()
+    {
+        // Reset only after confirmation
+        UIManager.Instance.ShowConfirmMessage(
+            "This will <b>DELETE ALL DATA</b>. This action is <b>IRREVERSIBLE</b>. Do you wish to continue?",
+            () =>
+            {
+                SaveSystem.HardResetSavedData();
+                LoadData();
+            }
+        );
+    }
+    #endregion
+
+    #region Save System Methods (LoadData and SaveData)
     private void LoadData()
     {
         // Load saved data
@@ -70,75 +155,9 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources, pureChroma);
     }
+    #endregion
 
-    public void OnChromaClicked()
-    {
-        currentChroma += chromaIncreasePerClick;
-        UIManager.Instance.SetCurrentChromaUI(currentChroma);
-    }
-
-    public bool SpendChroma(double amount)
-    {
-        if (currentChroma >= amount)
-        {
-            currentChroma -= amount;
-            UIManager.Instance.SetCurrentChromaUI(currentChroma);
-            return true;
-        }
-        return false;
-    }
-
-    private void AddAfkFarmedChroma(long elapsedSeconds)
-    {
-        // GUARD CLAUSE: Do nothing if no chroma is being generated, or if less than 2 minutes passed since last session
-        if (chromaPerSecond == 0 || elapsedSeconds < 120) return;
-        // Increase chroma and show message to player
-        double obtainedChroma = Math.Round(chromaPerSecond * elapsedSeconds * 0.4f);
-        string obtainedChromaString = Utils.FormatBigNumber(obtainedChroma);
-        string secondsAfk = Utils.FormatTimeLapseFromSeconds(elapsedSeconds);
-        UIManager.Instance.ShowInfoMessage("You were away for " + secondsAfk + ". You got " + obtainedChromaString + " chroma while you were AFK.");
-        currentChroma += obtainedChroma;
-        // Save data to prevent showing the same message again
-        SaveData();
-    }
-
-    public void RecalculateTotalChromaPerSecond()
-    {
-        float prestigeBonus = Prestige.CalculateIncreaseFromPureChroma(pureChroma);
-        chromaPerSecond = ResourcesManager.Instance.CalculateTotalChromaPerSecond() * (1 + (prestigeBonus / 100));
-        UIManager.Instance.SetChromaPerSecondUI(chromaPerSecond, prestigeBonus);
-        chromaIncreasePerClick = 1f + (chromaPerSecond * 0.02f); // Each click is = 1 + (2% of cps)
-        ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(currentChroma);
-    }
-
-    // Running prestige will set currentChroma to 0, all resources to none, and will increase the 
-    public void ActivatePrestige()
-    {
-        int pureChromaGained = Prestige.CalculatePureChromaFromChroma(currentChroma);
-        // Increase pure chroma
-        pureChroma += pureChromaGained;
-        // Reset chroma and resources
-        currentChroma = 0;
-        UIManager.Instance.SetCurrentChromaUI(0);
-        ResourcesManager.Instance.ResetResourcesList();
-        // With the updated values, recalculate chroma per second (and click increase)
-        RecalculateTotalChromaPerSecond();
-    }
-
-    public void OnHardResetButtonClicked()
-    {
-        // Reset only after confirmation
-        UIManager.Instance.ShowConfirmMessage(
-            "This will <b>DELETE ALL DATA</b>. This action is <b>IRREVERSIBLE</b>. Do you wish to continue?",
-            () =>
-            {
-                SaveSystem.HardResetSavedData();
-                LoadData();
-            }
-        );
-    }
-
-    // ------- Loops (Coroutines) -------
+    #region Game Logic Loops (Coroutines)
     // CPS loop (auto-generated currency)
     IEnumerator ChromaPerSecondLoop()
     {
@@ -159,4 +178,6 @@ public class GameManager : MonoBehaviour
             SaveData();
         }
     }
+    #endregion
+
 }

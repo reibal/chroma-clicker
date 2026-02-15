@@ -1764,6 +1764,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   currentChroma: 0
   pureChroma: 0
+  clickParticlesPrefab: {fileID: 1816489701510802692, guid: b0199a188c651a94aa7998e440abdf37, type: 3}
 --- !u!4 &804994276
 Transform:
   m_ObjectHideFlags: 0
@@ -2449,8 +2450,8 @@ Canvas:
   m_GameObject: {fileID: 956559057}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -2479,7 +2480,6 @@ RectTransform:
   - {fileID: 973603382}
   - {fileID: 615137194}
   - {fileID: 329014303}
-  - {fileID: 1244612399}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3034,11 +3034,11 @@ Transform:
   m_GameObject: {fileID: 1244612396}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -495.53796, y: -1046.1357, z: 0}
-  m_LocalScale: {x: 0.9176629, y: 0.9176629, z: 0.9176629}
+  m_LocalPosition: {x: -2.368421, y: -5, z: 90}
+  m_LocalScale: {x: 0.0043859654, y: 0.0043859654, z: 0.0043859654}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 956559061}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1267408449
 GameObject:
@@ -4802,8 +4802,8 @@ Canvas:
   m_GameObject: {fileID: 1742253528}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -5790,7 +5790,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 956559061}
+  - {fileID: 1742253532}
+  - {fileID: 1244612399}
   - {fileID: 804994276}
   - {fileID: 1333167161}
   - {fileID: 592326926}
-  - {fileID: 1742253532}
