@@ -15,7 +15,7 @@ public class ResourceRuntimeData
     public double ChromaPerSecondEachResource => resourceData.chromaPerSecond;
 
     // Public getters (calculated)
-    public int NextUpgradeCost => Mathf.CeilToInt(resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount));
+    public double NextUpgradeCost => resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount);
     public double TotalChromaPerSecond => resourceData.chromaPerSecond * amount;
 
     public ResourceRuntimeData(ResourceData resourceData)
@@ -50,7 +50,7 @@ public class ResourceRuntimeData
     public void RevalidatePurchaseButtonAvailability(double currentChroma)
     {
         if (!resourceGameObject) return;
-        if (currentChroma > NextUpgradeCost)
+        if (currentChroma >= NextUpgradeCost)
         {
             resourceGameObject.EnablePurchaseButton();
         }
