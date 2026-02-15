@@ -4116,7 +4116,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 804994275}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: DeleteAllSavedData
+        m_MethodName: OnHardResetButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4594,7 +4594,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 495.53796, y: -113.630005}
+  m_AnchoredPosition: {x: 495.53796, y: -113.63013}
   m_SizeDelta: {x: 871.0759, y: 107.26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1666589624
