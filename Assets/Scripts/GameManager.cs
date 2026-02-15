@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
         chromaPerSecond = ResourcesManager.Instance.CalculateTotalChromaPerSecond();
         UIManager.Instance.SetChromaPerSecondUI(chromaPerSecond);
         chromaIncreasePerClick = 1f + (chromaPerSecond * 0.05f); // Each click is = 1 + (5% of cps)
-        ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(chromaPerSecond);
+        ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(currentChroma);
     }
 
     public void DeleteAllSavedData()
