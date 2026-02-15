@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class UIManager : MonoBehaviour
     {
         // Fix to also show 2 decimals when below 1K
         string amountString = chromaAmount > 1000 ? Utils.FormatBigNumber(chromaAmount) : $"{chromaAmount:F2}";
-        string prestigeBonusString = prestigeBonus > 0f ? $"(+{prestigeBonus:0.##}%)": "";
+        string prestigeBonusString = prestigeBonus > 0f ? $"(+{prestigeBonus:0.##}%)" : "";
         chromaPerSecondText.text = $"{amountString} cps {prestigeBonusString}";
     }
 
@@ -57,11 +58,12 @@ public class UIManager : MonoBehaviour
         confirmMessageWindow.ShowMessage(message);
     }
 
-    public void ShowDisplayInfoOnChromaClicked() {
+    public void ShowDisplayInfoOnChromaClicked()
+    {
         // Show particle system on click
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = Camera.main.nearClipPlane + 1f;
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector2 pointerPos = Pointer.current.position.ReadValue();
+        Vector3 screenPosition = new Vector3(pointerPos.x, pointerPos.y, Camera.main.nearClipPlane + 1f);
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
         Instantiate(clickParticleSystemPrefab, worldPosition, Quaternion.identity);
     }
 }
