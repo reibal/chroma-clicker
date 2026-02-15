@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
         // Increase chroma and show message to player
         double obtainedChroma = Math.Round(chromaPerSecond * elapsedSeconds * 0.4f);
         string timeLapse = Utils.FormatTimeLapseFromSeconds(elapsedSeconds);
-        UIManager.Instance.ShowMessage("You were away for " + timeLapse + ". You got " + obtainedChroma + " chroma while you were AFK.");
+        UIManager.Instance.ShowInfoMessage("You were away for " + timeLapse + ". You got " + obtainedChroma + " chroma while you were AFK.");
         currentChroma += obtainedChroma;
         // Save data to prevent showing the same message again
         SaveSystem.Save(currentChroma, ResourcesManager.Instance.Resources);
@@ -120,11 +120,16 @@ public class GameManager : MonoBehaviour
         ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(currentChroma);
     }
 
-    public void DeleteAllSavedData()
+    public void OnHardResetButtonClicked()
     {
-        // TODO: Add a confirmation message (instead of just an info message) before deleting data
-        UIManager.Instance.ShowMessage("Your game data was deleted. Starting over from scratch...");
-        SaveSystem.HardResetSavedData();
-        LoadData();
+        // Reset only after confirmation
+        UIManager.Instance.ShowConfirmMessage(
+            "This will <b>DELETE ALL DATA</b>. This action is <b>IRREVERSIBLE</b>. Do you wish to continue?",
+            () =>
+            {
+                SaveSystem.HardResetSavedData();
+                LoadData();
+            }
+        );
     }
 }

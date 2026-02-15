@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -12,9 +13,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI chromaPerSecondText;
 
-    [Header("Pop Up Window")]
-    [SerializeField]
-    private PopUpMessageWindow messageWindow;
+    [Header("Pop Up Windows")]
+    [SerializeField] private InfoMessageWindow infoMessageWindow;
+    [SerializeField] private ConfirmMessageWindow confirmMessageWindow;
 
     void Awake()
     {
@@ -46,8 +47,14 @@ public class UIManager : MonoBehaviour
         chromaPerSecondText.text = $"{amountString} cps";
     }
 
-    public void ShowMessage(string message)
+    public void ShowInfoMessage(string message)
     {
-        messageWindow.ShowMessage(message);
+        infoMessageWindow.ShowMessage(message);
+    }
+
+    public void ShowConfirmMessage(string message, Action callbackOnConfirm)
+    {
+        confirmMessageWindow.SetCallbackOnConfirm(callbackOnConfirm);
+        confirmMessageWindow.ShowMessage(message);
     }
 }

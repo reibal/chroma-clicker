@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUpMessageWindow : MonoBehaviour
+public class InfoMessageWindow : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI shownText;
