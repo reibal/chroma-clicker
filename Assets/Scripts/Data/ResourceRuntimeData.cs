@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class ResourceRuntimeData
@@ -16,7 +15,7 @@ public class ResourceRuntimeData
     public double ChromaPerSecondEachResource => resourceData.chromaPerSecond;
 
     // Public getters (calculated)
-    public int UpgradeCost => Mathf.CeilToInt(resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount));
+    public int NextUpgradeCost => Mathf.CeilToInt(resourceData.baseCost * Mathf.Pow(1 + resourceData.costIncreaseRatio, amount));
     public double TotalChromaPerSecond => resourceData.chromaPerSecond * amount;
 
     public ResourceRuntimeData(ResourceData resourceData)
@@ -46,5 +45,18 @@ public class ResourceRuntimeData
         resourceGameObject.UpdateAmountText();
         resourceGameObject.UpdateChromaGeneratedText();
         resourceGameObject.UpdatePurchaseButtonText();
+    }
+
+    public void RevalidatePurchaseButtonAvailability(double currentChroma)
+    {
+        if (!resourceGameObject) return;
+        if (currentChroma > NextUpgradeCost)
+        {
+            resourceGameObject.EnablePurchaseButton();
+        }
+        else
+        {
+            resourceGameObject.DisablePurchaseButton();
+        }
     }
 }

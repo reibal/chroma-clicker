@@ -69,13 +69,13 @@ public class ResourcesManager : MonoBehaviour
     public void PurchaseResource(int resourceIndex)
     {
         ResourceRuntimeData resource = resources[resourceIndex];
-        bool canAfford = GameManager.Instance.SpendChroma(resource.UpgradeCost);
+        bool canAfford = GameManager.Instance.SpendChroma(resource.NextUpgradeCost);
         if (!canAfford)
         {
-            Debug.Log($"Not enough Chroma to purchase {resource.ResourceName}. Required: {resource.UpgradeCost}, Current: {GameManager.Instance.CurrentChroma}");
+            Debug.Log($"Not enough Chroma to purchase {resource.ResourceName}. Required: {resource.NextUpgradeCost}, Current: {GameManager.Instance.CurrentChroma}");
             return;
         }
-        Debug.Log($"Purchasing resource: {resource.ResourceName} for {resource.UpgradeCost} Chroma.");
+        Debug.Log($"Purchasing resource: {resource.ResourceName} for {resource.NextUpgradeCost} Chroma.");
         resource.IncreaseAmountBy(1);
         GameManager.Instance.RecalculateTotalChromaPerSecond();
         // If the player purchases this resource for the first time, and it's not the last tier, instantiate the next tier
@@ -98,5 +98,13 @@ public class ResourcesManager : MonoBehaviour
     public ResourceData[] GetResourceDataList()
     {
         return resourceDataList;
+    }
+
+    public void RevalidatePurchaseButtonsAvailability(double currentChroma)
+    {
+        foreach (ResourceRuntimeData resource in resources)
+        {
+            resource.RevalidatePurchaseButtonAvailability(currentChroma);
+        }
     }
 }

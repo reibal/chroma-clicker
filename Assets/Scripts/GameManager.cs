@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(loopDelaySeconds);
             currentChroma += chromaPerSecond * loopDelaySeconds;
             UIManager.Instance.SetCurrentChromaUI(currentChroma);
+            ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(currentChroma);
         }
     }
 
@@ -116,6 +117,7 @@ public class GameManager : MonoBehaviour
         chromaPerSecond = ResourcesManager.Instance.CalculateTotalChromaPerSecond();
         UIManager.Instance.SetChromaPerSecondUI(chromaPerSecond);
         chromaIncreasePerClick = 1f + (chromaPerSecond * 0.05f); // Each click is = 1 + (5% of cps)
+        ResourcesManager.Instance.RevalidatePurchaseButtonsAvailability(chromaPerSecond);
     }
 
     public void DeleteAllSavedData()

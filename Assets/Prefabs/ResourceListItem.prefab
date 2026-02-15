@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4606369947516980894}
   - component: {fileID: 5182875471537958895}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: BuyUpgradeText (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -341,7 +341,7 @@ MonoBehaviour:
   titleTMP: {fileID: 7895691853018672701}
   descriptionTMP: {fileID: 2782776732105263760}
   chromaGeneratedTMP: {fileID: 6633165038738367997}
-  purchaseButtonTMP: {fileID: 5182875471537958895}
+  purchaseButtonTextTMP: {fileID: 5182875471537958895}
   amountTMP: {fileID: 4633723509764664340}
 --- !u!1 &2329852101187290653
 GameObject:
@@ -718,7 +718,7 @@ GameObject:
   - component: {fileID: 2839000285706264088}
   - component: {fileID: 8095240437850784932}
   m_Layer: 5
-  m_Name: UpgradeBuyButton
+  m_Name: BuyUpgradeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
