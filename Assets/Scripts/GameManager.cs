@@ -94,8 +94,9 @@ public class GameManager : MonoBehaviour
         if (chromaPerSecond == 0 || elapsedSeconds < 120) return;
         // Increase chroma and show message to player
         double obtainedChroma = Math.Round(chromaPerSecond * elapsedSeconds * 0.4f);
-        string timeLapse = Utils.FormatTimeLapseFromSeconds(elapsedSeconds);
-        UIManager.Instance.ShowInfoMessage("You were away for " + timeLapse + ". You got " + obtainedChroma + " chroma while you were AFK.");
+        string obtainedChromaString = Utils.FormatBigNumber(obtainedChroma);
+        string secondsAfk = Utils.FormatTimeLapseFromSeconds(elapsedSeconds);
+        UIManager.Instance.ShowInfoMessage("You were away for " + secondsAfk + ". You got " + obtainedChromaString + " chroma while you were AFK.");
         currentChroma += obtainedChroma;
         // Save data to prevent showing the same message again
         SaveData();
