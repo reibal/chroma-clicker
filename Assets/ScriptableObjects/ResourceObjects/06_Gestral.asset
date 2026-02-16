@@ -19,4 +19,4 @@ MonoBehaviour:
   chromaPerSecond: 5600
   baseCost: 48000000
   costIncreaseRatio: 0.25
-  icon: {fileID: 1600582937693692523, guid: 5c2cd71166276234b97964e956a45f2e, type: 3}
+  icon: {fileID: -9042849163400669773, guid: e5fb1de77cb4d7c4ca5b10abf45d0ce3, type: 3}
