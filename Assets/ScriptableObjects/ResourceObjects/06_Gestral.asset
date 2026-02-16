@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561c76e8f32e68f44b55161fac9b53dd, type: 3}
+  m_Name: 06_Gestral
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceData
+  resourceIndex: 6
+  resourceName: Gestral Fighter
+  description: A Gestral who fights in the Arena. People bet Chroma and winners make
+    fortunes!
+  chromaPerSecond: 5600
+  baseCost: 48000000
+  costIncreaseRatio: 0.25
+  icon: {fileID: 1600582937693692523, guid: 5c2cd71166276234b97964e956a45f2e, type: 3}
