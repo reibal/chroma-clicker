@@ -15,7 +15,7 @@ MonoBehaviour:
   resourceIndex: 5
   resourceName: Painting Brush
   description: A brush that can use chroma to paint anything... even more chroma!
-  chromaPerSecond: 400
-  baseCost: 720000
-  costIncreaseRatio: 0.3
+  chromaPerSecond: 1200
+  baseCost: 1600000
+  costIncreaseRatio: 0.25
   icon: {fileID: 1600582937693692523, guid: 5c2cd71166276234b97964e956a45f2e, type: 3}

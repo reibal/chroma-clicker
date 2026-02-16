@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         // GUARD CLAUSE: Do nothing if no chroma is being generated, or if less than 2 minutes passed since last session
         if (chromaPerSecond == 0 || elapsedSeconds < 120) return;
         // Increase chroma and show message to player
-        double obtainedChroma = Math.Round(chromaPerSecond * elapsedSeconds * 0.4f);
+        double obtainedChroma = Math.Round(chromaPerSecond * elapsedSeconds * 0.3f); // <-- Reward 30% of the chroma that would've been generated
         string obtainedChromaString = Utils.FormatBigNumber(obtainedChroma);
         string secondsAfk = Utils.FormatTimeLapseFromSeconds(elapsedSeconds);
         UIManager.Instance.ShowInfoMessage("You were away for " + secondsAfk + ". You got " + obtainedChromaString + " chroma while you were AFK.");
